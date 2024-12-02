@@ -71,12 +71,15 @@ This document outlines the features of the **{laminr}** package and the roadmap 
 * [x] **Delete artifacts**: Delete an existing artifact.
 * [ ] **Manage artifact metadata**: Add, update, and delete artifact metadata.
 * [ ] **Work with collections**: Create, manage, and query collections of artifacts.
+* [ ] **Stream backed artifacts**: Connect to file-backed artifacts (`$open`).
+  - [x] `tiledbsoma`: Stream TileDB-SOMA objects
 
 ### Track notebooks & scripts
 
 * [x] **Track code execution**: Automatically track the execution of R scripts and notebooks.
 * [ ] **Capture run context**: Record information about the execution environment (e.g., package versions, parameters).
 * [x] **Link code to artifacts**: Associate code execution with generated artifacts.
+  - [x] Link to artifacts loaded from other instances
 * [ ] **Visualize data lineage**: Create visualizations of data lineage and dependencies.
 * [x] **Finalize tracking**: End and save a run.
 
@@ -126,16 +129,23 @@ A first version of the package that allows users to:
 
 ### Version 0.2.0
 
-* Expand query functionality with comparators, relationships, and pagination.
 * Implement basic data and metadata management features (create, save, load and delete artifacts).
-* Expand support for different data formats and storage backends.
+* Expand support for different data formats.
 * Implement code tracking.
 
 ### Version 0.3.0
 
+* Track input artifacts.
+* Support for more storage backends using a reticulate Python backend.
+
+### Version 0.4.0
+
+* Expand support for different storage backends.
+* Expand query functionality with comparators, relationships, and pagination.
 * Implement data lineage visualization.
 * Introduce data curation features (validation, standardization, annotation).
 * Enhance support for bionty registries and ontology interactions.
+* Connect to TileDB-SOMA artifacts.
 
 ### Future versions
 

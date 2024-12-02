@@ -60,22 +60,21 @@ create_instance <- function(instance_settings, is_default = FALSE) {
   )
 
   py_lamin <- NULL
-  if (isTRUE(is_default)) {
-    check_requires("Connecting to Python", "reticulate", type = "warning")
-
-    py_lamin <- tryCatch(
-      reticulate::import("lamindb"),
-      error = function(err) {
-        cli::cli_warn(c(
-          paste(
-            "Failed to connect to the Python {.pkg lamindb} package,",
-            "you will not be able to create records"
-          ),
-          "i" = "See {.run reticulate::py_config()} for more information"
-        ))
-        NULL
-      }
-    )
+  check_requires("Connecting to Python", "reticulate", alert = "warning")
+  py_lamin <- tryCatch(
+    reticulate::import("lamindb"),
+    error = function(err) {
+      NULL
+    }
+  )
+  if (isTRUE(is_default) && is.null(py_lamin)) {
+    cli::cli_warn(c(
+      paste(
+        "Default instance failed to connect to the Python {.pkg lamindb} package,",
+        "you will not be able to create records"
+      ),
+      "i" = "See {.run reticulate::py_config()} for more information"
+    ))
   }
 
   # create the instance
@@ -225,7 +224,12 @@ Instance <- R6::R6Class( # nolint object_name_linter
       py_lamin <- self$get_py_lamin(check = TRUE, what = "Tracking")
 
       if (is.null(path)) {
-        cli::cli_abort("The {.arg path} argument must be provided")
+        path <- detect_path()
+        if (is.null(path)) {
+          cli::cli_abort(
+            "Failed to detect the path to track. Please set the {.arg path} argument."
+          )
+        }
       }
 
       if (is.null(transform)) {
@@ -233,6 +237,7 @@ Instance <- R6::R6Class( # nolint object_name_linter
           py_lamin$track(path = path),
           error = function(err) {
             py_err <- reticulate::py_last_error()
+            # please don't change the below without changing it in lamindb
             if (py_err$type != "MissingContextUID") {
               cli::cli_abort(c(
                 "Python {py_err$message}",
@@ -242,8 +247,7 @@ Instance <- R6::R6Class( # nolint object_name_linter
 
             uid <- gsub(".*\\(\"(.*?)\"\\).*", "\\1", py_err$value)
             cli::cli_inform(paste(
-              "Got UID {.val {uid}} for path {.file {path}}.",
-              "Run this function with {.code transform = \"{uid}\"} to track this path."
+              "To track this notebook, run: db$track(\"{uid}\")"
             ))
           }
         )
@@ -260,7 +264,21 @@ Instance <- R6::R6Class( # nolint object_name_linter
     #' @description Finish a tracked run
     finish = function() {
       py_lamin <- self$get_py_lamin(check = TRUE, what = "Tracking")
-      py_lamin$finish()
+      tryCatch(
+        py_lamin$finish(),
+        error = function(err) {
+          py_err <- reticulate::py_last_error()
+          if (py_err$type != "NotebookNotSaved") {
+            cli::cli_abort(c(
+              "Python {py_err$message}",
+              "i" = "Run {.run reticulate::py_last_error()} for details"
+            ))
+          }
+          # please don't change the below without changing it in lamindb
+          message <- gsub(".*NotebookNotSaved: (.*)$", "\\1", py_err$value)
+          cli::cli_inform(paste("NotebookNotSaved: {message}"))
+        }
+      )
     },
     #' @description
     #' Print an `Instance`

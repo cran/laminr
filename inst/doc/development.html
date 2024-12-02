@@ -245,12 +245,19 @@ text-decoration: underline; }
 <li><label><input type="checkbox" checked><strong>Delete artifacts</strong>: Delete an existing artifact.</label></li>
 <li><label><input type="checkbox"><strong>Manage artifact metadata</strong>: Add, update, and delete artifact metadata.</label></li>
 <li><label><input type="checkbox"><strong>Work with collections</strong>: Create, manage, and query collections of artifacts.</label></li>
+<li><label><input type="checkbox"><strong>Stream backed artifacts</strong>: Connect to file-backed artifacts (<code>$open</code>).</label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked><code>tiledbsoma</code>: Stream TileDB-SOMA objects</label></li>
+</ul></li>
 </ul>
 <h3 id="track-notebooks-scripts">Track notebooks &amp; scripts</h3>
 <ul class="task-list">
 <li><label><input type="checkbox" checked><strong>Track code execution</strong>: Automatically track the execution of R scripts and notebooks.</label></li>
 <li><label><input type="checkbox"><strong>Capture run context</strong>: Record information about the execution environment (e.g., package versions, parameters).</label></li>
-<li><label><input type="checkbox" checked><strong>Link code to artifacts</strong>: Associate code execution with generated artifacts.</label></li>
+<li><label><input type="checkbox" checked><strong>Link code to artifacts</strong>: Associate code execution with generated artifacts.</label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked>Link to artifacts loaded from other instances</label></li>
+</ul></li>
 <li><label><input type="checkbox"><strong>Visualize data lineage</strong>: Create visualizations of data lineage and dependencies.</label></li>
 <li><label><input type="checkbox" checked><strong>Finalize tracking</strong>: End and save a run.</label></li>
 </ul>
@@ -298,16 +305,23 @@ text-decoration: underline; }
 </ul>
 <h3 id="version-0.2.0">Version 0.2.0</h3>
 <ul>
-<li>Expand query functionality with comparators, relationships, and pagination.</li>
 <li>Implement basic data and metadata management features (create, save, load and delete artifacts).</li>
-<li>Expand support for different data formats and storage backends.</li>
+<li>Expand support for different data formats.</li>
 <li>Implement code tracking.</li>
 </ul>
 <h3 id="version-0.3.0">Version 0.3.0</h3>
 <ul>
+<li>Track input artifacts.</li>
+<li>Support for more storage backends using a reticulate Python backend.</li>
+</ul>
+<h3 id="version-0.4.0">Version 0.4.0</h3>
+<ul>
+<li>Expand support for different storage backends.</li>
+<li>Expand query functionality with comparators, relationships, and pagination.</li>
 <li>Implement data lineage visualization.</li>
 <li>Introduce data curation features (validation, standardization, annotation).</li>
 <li>Enhance support for bionty registries and ontology interactions.</li>
+<li>Connect to TileDB-SOMA artifacts.</li>
 </ul>
 <h3 id="future-versions">Future versions</h3>
 <ul>

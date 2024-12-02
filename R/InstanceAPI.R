@@ -31,9 +31,12 @@ InstanceAPI <- R6::R6Class( # nolint object_name_linter
         "/schema"
       )
 
-      response <- httr::GET(url)
+      response <- httr::GET(
+        url,
+        httr::add_headers(.headers = private$get_headers())
+      )
 
-      private$process_response(response, "get schema")
+      process_httr_response(response, "get schema from instance")
     },
     #' @description
     #' Get a record from the instance.
@@ -99,14 +102,11 @@ InstanceAPI <- R6::R6Class( # nolint object_name_linter
 
       response <- httr::POST(
         url,
-        httr::add_headers(
-          accept = "application/json",
-          `Content-Type` = "application/json"
-        ),
+        httr::add_headers(.headers = private$get_headers()),
         body = body
       )
 
-      private$process_response(response, "get record")
+      process_httr_response(response, "get record from instance")
     },
     #' @description
     #' Get a summary of available records from the instance.
@@ -187,14 +187,11 @@ InstanceAPI <- R6::R6Class( # nolint object_name_linter
 
       response <- httr::POST(
         url,
-        httr::add_headers(
-          accept = "application/json",
-          `Content-Type` = "application/json"
-        ),
+        httr::add_headers(.headers = private$get_headers()),
         body = body
       )
 
-      private$process_response(response, "get record")
+      process_httr_response(response, "get record from instance")
     },
     #' @description
     #' Delete a record from the instance.
@@ -202,14 +199,6 @@ InstanceAPI <- R6::R6Class( # nolint object_name_linter
                              registry_name,
                              id_or_uid,
                              verbose = FALSE) {
-      user_settings <- .get_user_settings()
-      if (is.null(user_settings$access_token)) {
-        cli::cli_abort(c(
-          "There is no access token for the current user",
-          "i" = "Run {.code lamin login} and reconnect to the database in a new R session"
-        ))
-      }
-
       url <- paste0(
         private$.instance_settings$api_url,
         "/instances/",
@@ -231,13 +220,11 @@ InstanceAPI <- R6::R6Class( # nolint object_name_linter
       response <- httr::DELETE(
         url,
         httr::add_headers(
-          accept = "application/json",
-          `Content-Type` = "application/json",
-          Authorization = paste("Bearer", user_settings$access_token)
+          .headers = private$get_headers(authorization_required = TRUE)
         )
       )
 
-      private$process_response(response, "delete record")
+      process_httr_response(response, "delete record from instance")
     },
     #' @description
     #' Print an `API`
@@ -262,24 +249,23 @@ InstanceAPI <- R6::R6Class( # nolint object_name_linter
   ),
   private = list(
     .instance_settings = NULL,
-    process_response = function(response, request_type) {
-      content <- httr::content(response)
-      if (httr::http_error(response)) {
-        if (is.list(content) && "detail" %in% names(content)) {
-          detail <- content$detail
-          if (is.list(detail)) {
-            detail <- jsonlite::minify(jsonlite::toJSON(content$detail))
-          }
-        } else {
-          detail <- content
-        }
-        cli_abort(c(
-          "Failed to {request_type} from instance with status code {response$status_code}",
-          "i" = "Details: {detail}"
+    get_headers = function(authorization_required = FALSE) {
+      headers <- c(
+        accept = "application/json",
+        `Content-Type` = "application/json"
+      )
+      user_settings <- .get_user_settings()
+
+      if (!is.null(user_settings$access_token)) {
+        headers[["Authorization"]] <- paste("Bearer", user_settings$access_token)
+      } else if (authorization_required) {
+        cli::cli_abort(c(
+          "There is no access token for the current user",
+          "i" = "Run {.code lamin login} and reconnect to the database in a new R session"
         ))
       }
 
-      content
+      return(headers)
     }
   )
 )
