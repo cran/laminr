@@ -178,6 +178,12 @@ text-decoration: underline; }
 
 <p>This document outlines the features of the <strong>{laminr}</strong> package and the roadmap for future development.</p>
 <h2 id="features">Features</h2>
+<h3 id="setup">Setup</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked>Create a default Python instance for <strong>{laminr}</strong> (<code>install_lamindb()</code>)</label></li>
+<li><label><input type="checkbox" checked>Login to LaminDB from R (<code>lamin_login()</code>)</label></li>
+<li><label><input type="checkbox" checked>Set a default instance from R (<code>lamin_connect()</code>)</label></li>
+</ul>
 <h3 id="connect-to-an-instance">Connect to an instance</h3>
 <ul class="task-list">
 <li><label><input type="checkbox" checked>Connect to a LaminDB instance (<code>connect()</code>).</label></li>
@@ -322,6 +328,8 @@ text-decoration: underline; }
 <li>Introduce data curation features (validation, standardization, annotation).</li>
 <li>Enhance support for bionty registries and ontology interactions.</li>
 <li>Connect to TileDB-SOMA artifacts.</li>
+<li>Allow users to install <strong>lamindb</strong> and manage a Python environment</li>
+<li>Login and set a default instance from R</li>
 </ul>
 <h3 id="future-versions">Future versions</h3>
 <ul>

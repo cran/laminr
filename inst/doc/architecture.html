@@ -2899,13 +2899,13 @@ text-decoration: underline; }
 <p>For example, to get an artifact with a specific ID using <strong>only</strong> base classes, you might write:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>db <span class="ot">&lt;-</span> <span class="fu">connect</span>(<span class="st">&quot;laminlabs/cellxgene&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>artifact <span class="ot">&lt;-</span> db<span class="sc">$</span><span class="fu">get_module</span>(<span class="st">&quot;core&quot;</span>)<span class="sc">$</span><span class="fu">get_registry</span>(<span class="st">&quot;artifact&quot;</span>)<span class="sc">$</span><span class="fu">get</span>(<span class="st">&quot;KBW89Mf7IGcekja2hADu&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>artifact <span class="ot">&lt;-</span> db<span class="sc">$</span><span class="fu">get_module</span>(<span class="st">&quot;core&quot;</span>)<span class="sc">$</span><span class="fu">get_registry</span>(<span class="st">&quot;artifact&quot;</span>)<span class="sc">$</span><span class="fu">get</span>(<span class="st">&quot;MkRm3eUKPwfnAyZMWD9v&quot;</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>artifact<span class="sc">$</span><span class="fu">get_value</span>(<span class="st">&quot;id&quot;</span>)</span></code></pre></div>
 <p>With the sugar syntax classes, you can achieve the same result more concisely:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>db <span class="ot">&lt;-</span> <span class="fu">connect</span>(<span class="st">&quot;laminlabs/cellxgene&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>artifact <span class="ot">&lt;-</span> db<span class="sc">$</span>Artifact<span class="sc">$</span><span class="fu">get</span>(<span class="st">&quot;KBW89Mf7IGcekja2hADu&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>artifact <span class="ot">&lt;-</span> db<span class="sc">$</span>Artifact<span class="sc">$</span><span class="fu">get</span>(<span class="st">&quot;MkRm3eUKPwfnAyZMWD9v&quot;</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>artifact<span class="sc">$</span>id</span></code></pre></div>
 <p>This sugar syntax is achieved by creating RichInstance and RichRecord classes that inherit from Instance and Record, respectively. These classes provide additional methods and properties to simplify working with LaminDB data.</p>
