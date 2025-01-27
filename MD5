@@ -1,4 +1,4 @@
-95b3fe2a9ac3b1426d30116cb8bff768 *DESCRIPTION
+5d067c285290003272094901b6e55662 *DESCRIPTION
 4b28b4aec17e0f9f8a518c3ad30ee0c8 *NAMESPACE
 6fe0d63e7fff268a9400b7a459b2b664 *R/Artifact.R
 cbc6b0fe6290d1d882014e2070e583a2 *R/Field.R
@@ -54,7 +54,7 @@ c7013ffe7cb0cbdbef2820cb3355c602 *vignettes/cellxgene_basic.html
 d63f934f8368e055ba608b236bdfb008 *vignettes/concepts_features.Rmd
 d792fb70cb0e261a98d49934db24fbd0 *vignettes/development.qmd
 353199117cfa5be7f93b680fe67172d7 *vignettes/example_workflow.html
-b2d3b337f54191faff0589308333779f *vignettes/laminr.Rmd
+59e3878c7a3bd04e224e19274378a844 *vignettes/laminr.Rmd
 b77e74d169afd4a4eafecf1e99681479 *vignettes/module_bionty.Rmd
 0b0b89aa4fbd56873f7684bf426cf752 *vignettes/module_core.Rmd
 0c21f4a21859f782ff4f5524da3612e7 *vignettes/module_wetlab.Rmd
