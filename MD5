@@ -1,4 +1,4 @@
-089be6952168dced4301f2d1566d9a4b *DESCRIPTION
+e4b71d4ce0319f4428544d32110604de *DESCRIPTION
 09096a3287506fd3e071e7fe6f312b71 *NAMESPACE
 79706fabc29617b216c367b4aa6db20e *R/Artifact.R
 8367de9a9247f8bcbb980cd825f753c2 *R/CallableWrappedPythonObject.R
@@ -7,7 +7,7 @@ ad088231f7f987b459eb29a3f3640b32 *R/Collection.R
 5fbef80855c90ed39e33fd0f8046593e *R/Transform.R
 a230f7b72c51f062541a0f49bcaa6454 *R/WrappedPythonObject.R
 48d7144e2565c91bef876fd39a5870fb *R/checks.R
-a8c196a0aa3ea8b909d7b135bdaf1ec3 *R/file_loaders.R
+819eb22319ee7f906c702a709034da90 *R/file_loaders.R
 df541597d666f078e24746311a7f8817 *R/file_openers.R
 df070fb7d57ad486a333afd4780fe73d *R/help.R
 dfc1c012869618dbc9de41806134e334 *R/import.R
@@ -24,7 +24,7 @@ e184617f0e5619337185f2e2f0bbc377 *R/laminr-package.R
 2de05723d22a84955de60812c370ae00 *R/wrap-python.R
 77465a1ea7b5deb9b1e1315a9bc863ff *R/zzz.R
 6f219db1ef96e32c8b8ca7d3c8e20a1b *README.md
-b89ad91dd0ca2ae01c14c94f017f4e52 *build/vignette.rds
+51899421fbb858b84ecd8714b3f5357e *build/vignette.rds
 1410747b88cb65b76c72437b849aa5d8 *inst/doc/welcome.html
 1d10376c49b5bc4444a7aa864a535827 *inst/doc/welcome.qmd
 688629c3a0f155133621dda41e70c70c *inst/rstudio/addins.dcf
@@ -44,7 +44,7 @@ f6ba99d484ef56f04cf513742e3867f7 *man/lamin_init.Rd
 b6f19e7bcc862a6daac5fb8b6eca346c *tests/testthat/setup.R
 3607a4e33cfe81e7aa6e0238632b88e0 *tests/testthat/test-Registry.R
 40a2955e54b9d953956b7218cf0ffa85 *tests/testthat/test-checks.R
-a19c6fb6ce119a863c08ebd117b9e4ba *tests/testthat/test-file_loaders.R
+ac89c52bb9e55c3e08e54e9d09fa60c2 *tests/testthat/test-file_loaders.R
 a3531bed1686eb6bb66242d99f070800 *tests/testthat/test-import.R
 f548e213e66090579747ea657cbd6f5b *tests/testthat/test-install.R
 c4100de674d5677e21fa60e8d285f6ad *tests/testthat/test-reticulate-utils.R
