@@ -1,6 +1,6 @@
 Package: laminr
 Title: Client for 'LaminDB'
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
     person("Robrecht", "Cannoodt", , "robrecht@lamin.ai", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3641-729X")),
@@ -26,11 +26,12 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-04-24 10:32:22 UTC; rcannood
-Author: Robrecht Cannoodt [aut, cre] (<https://orcid.org/0000-0003-3641-729X>),
-  Luke Zappia [aut] (<https://orcid.org/0000-0001-7744-8565>),
+Packaged: 2025-05-15 10:55:19 UTC; rcannood
+Author: Robrecht Cannoodt [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-3641-729X>),
+  Luke Zappia [aut] (ORCID: <https://orcid.org/0000-0001-7744-8565>),
   Data Intuitive [aut],
   Lamin Labs [aut, cph]
 Maintainer: Robrecht Cannoodt <robrecht@lamin.ai>
 Repository: CRAN
-Date/Publication: 2025-04-24 10:50:06 UTC
+Date/Publication: 2025-05-15 12:10:05 UTC

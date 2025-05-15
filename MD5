@@ -1,4 +1,4 @@
-163014ca30eb6b9d2294ad33ee37dcd6 *DESCRIPTION
+45dbf41c922beb42365410eb4949e6ef *DESCRIPTION
 56fc54b35aa9656a6f543cb4e45722c2 *NAMESPACE
 bdb8b2fa7023285ae6fee8e3bd5b7a61 *R/Artifact.R
 8367de9a9247f8bcbb980cd825f753c2 *R/CallableWrappedPythonObject.R
@@ -14,7 +14,7 @@ df070fb7d57ad486a333afd4780fe73d *R/help.R
 dd9bd36c9be680708c1521b4f7041d2d *R/import.R
 3f78048c11ae352749c16e440eab53ae *R/install.R
 b088fa72475b9c0e2165dda4d26e99cb *R/lamin_cli.R
-a7f6f601435bc4d76f03f4c19c01941a *R/lamindb.R
+b4abd2751db734940f81ff1b44f11208 *R/lamindb.R
 ff901a70d82573a4f0c769ac16737481 *R/laminr-package.R
 03dd7c24dd180e28ab5f87bf1000e8e1 *R/packages.R
 4bbf23ea44aa558242cf161217355e3f *R/require.R
