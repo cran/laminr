@@ -36,6 +36,45 @@ get_default_instance <- function() {
   getOption("LAMINR_DEFAULT_INSTANCE")
 }
 
+#' Get current LaminDB settings
+#'
+#' Get the current LaminDB settings as an R list
+#'
+#' @param minimal If `TRUE`, quickly extract a minimal list of important
+#'  settings instead of converting the complete settings object
+#'
+#' @returns A list of the current LaminDB settings
+#' @export
+#'
+#' @details
+#' This is done using [callr::r()] to avoid importing Python `lamindb` in the
+#' global environment
+get_current_lamin_settings <- function(minimal = FALSE) {
+  call_fun <- function(minimal) {
+    require_lamindb(silent = TRUE)
+    py_ln <- reticulate::import("lamindb")
+
+    py_settings <- py_ln$setup$settings
+
+    if (minimal) {
+      py_builtins <- reticulate::import_builtins()
+      list(
+        instance = list(
+          slug = py_settings$instance$slug,
+          modules = py_builtins$list(py_settings$instance$modules)
+        ),
+        user = list(
+          handle = py_settings$user$handle
+        )
+      )
+    } else {
+      py_settings_to_list(py_settings)
+    }
+  }
+
+  callr::r(call_fun, args = list(minimal = minimal), package = "laminr")
+}
+
 #' Get current LaminDB user
 #'
 #' Get the currently logged in LaminDB user
@@ -45,26 +84,17 @@ get_default_instance <- function() {
 #' @export
 #'
 #' @details
-#' This is done via a system call to `lamin settings` to avoid importing Python
+#' This is done via [get_current_lamin_settings()] to avoid importing Python
 #' `lamindb`
 get_current_lamin_user <- function() {
-  require_lamindb()
-  if (!reticulate::py_available()) {
-    # Force reticulate to connect to Python
-    py_config <- reticulate::py_config() # nolint object_usage_linter
-  }
+  settings <- get_current_lamin_settings(minimal = TRUE)
 
-  settings <- system2("lamin", "settings", stdout = TRUE)
+  handle <- settings$user$handle
 
-  is_handle <- grepl("handle:", settings)
-  handle_setting <- settings[is_handle]
-
-  if (length(handle_setting) == 0) {
+  if (is.null(handle)) {
     cli::cli_alert_danger("No current user")
     return(invisible(NULL))
   }
-
-  handle <- rev(strsplit(handle_setting, " ")[[1]])[1]
 
   handle
 }
@@ -78,28 +108,19 @@ get_current_lamin_user <- function() {
 #' @export
 #'
 #' @details
-#' This is done via a system call to `lamin settings` to avoid importing Python
+#' This is done via a [get_current_lamin_settings()] to avoid importing Python
 #' `lamindb`
 get_current_lamin_instance <- function() {
-  require_lamindb()
-  if (!reticulate::py_available()) {
-    # Force reticulate to connect to Python
-    py_config <- reticulate::py_config() # nolint object_usage_linter
-  }
+  settings <- get_current_lamin_settings(minimal = TRUE)
 
-  settings <- system2("lamin", "settings", stdout = TRUE)
+  instance_slug <- settings$instance$slug
 
-  is_instance <- grepl("Current instance:", settings)
-  instance_setting <- settings[is_instance]
-
-  if (length(instance_setting) == 0) {
+  if (is.null(instance_slug)) {
     cli::cli_alert_danger("No current instance")
     return(invisible(NULL))
   }
 
-  instance <- rev(strsplit(instance_setting, " ")[[1]])[1]
-
-  instance
+  instance_slug
 }
 
 #' Check if we are in a knitr notebook
@@ -158,7 +179,7 @@ detect_path <- function() {
   # Get path if in a document in RStudio
   if (is.null(current_path) && is_rstudio()) {
     doc_context <- rstudioapi::getActiveDocumentContext()
-    if (doc_context$id != "#console") {
+    if (is.null(doc_context$id) || doc_context$id != "#console") {
       current_path <- doc_context$path
     }
   }
@@ -169,4 +190,63 @@ detect_path <- function() {
   }
 
   current_path
+}
+
+#' Standardise list columns
+#'
+#' Standardise list columns in a data frame
+#'
+#' @param df The data frame to standardise
+#'
+#' @returns A data frame with standardised list columns
+#' @noRd
+#'
+#' @details
+#' If there are any list columns in `df` any atomic values in them of length 1
+#' are converted to a list of length 1. This is to make sure they are converted
+#' to Python as lists of length 1, rather than scalars as `arrow` cannot handle
+#' mixed list columns.
+standardise_list_columns <- function(df) {
+  list_columns <- which(purrr::map_lgl(df, is.list))
+  for (list_idx in list_columns) {
+    df[[list_idx]] <- purrr::map(df[[list_idx]], function(.item) {
+      if (is.atomic(.item) && length(.item) == 1) {
+        as.list(.item)
+      } else {
+        .item
+      }
+    })
+  }
+
+  df
+}
+
+#' Disable Lamin colors
+#'
+#' Disable ANSI color codes in Lamin print output.
+#'
+#' @returns `TRUE` invisibly if colors are disabled, `FALSE` if they are not
+#'   disabled
+#' @noRd
+disable_lamin_colors <- function() {
+  is_disabled <- getOption("LAMINR_COLORS_DISABLED", NULL)
+
+  if (!is.null(is_disabled)) {
+    return(invisible(is_disabled))
+  }
+
+  if (is_knitr_notebook()) {
+    # Disable Python ANSI color codes in knitr
+    # Don't use import_module() here to avoid an infinite loop
+    py_lamin_utils <- reticulate::import("lamin_utils")
+    py_lamin_utils[["_logger"]]$LEVEL_TO_COLORS <- setNames(list(), character(0))
+    py_lamin_utils[["_logger"]]$RESET_COLOR <- ""
+    options(LAMINR_COLORS_DISABLED = TRUE)
+
+    invisible(TRUE)
+  } else {
+    options(LAMINR_COLORS_DISABLED = FALSE)
+
+    invisible(FALSE)
+  }
 }

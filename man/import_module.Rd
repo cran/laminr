@@ -19,6 +19,7 @@ is being required}
 \verb{git+https://github.com/owner/module.git}}
     \item{\code{python_version}}{A string defining the Python version to require. Passed
 to \code{\link[reticulate:py_require]{reticulate::py_require()}}}
+    \item{\code{silent}}{Whether to suppress the message showing what has been required}
   }}
 }
 \value{
@@ -32,6 +33,9 @@ additional checks and nicer error messages.
 Python dependencies are set using \code{\link[=require_module]{require_module()}} before importing
 the module and used to create an ephemeral environment unless another
 environment is found (see \code{vignette("versions", package = "reticulate")}).
+
+Requirements for the \code{lamindb} module can be controlled using environment
+variables differently, see \url{https://docs.lamin.ai/setup-laminr} for details.
 }
 \examples{
 \dontrun{

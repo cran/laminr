@@ -14,6 +14,6 @@ instance is found
 Get the currently connected LaminDB instance
 }
 \details{
-This is done via a system call to \verb{lamin settings} to avoid importing Python
+This is done via a \code{\link[=get_current_lamin_settings]{get_current_lamin_settings()}} to avoid importing Python
 \code{lamindb}
 }
