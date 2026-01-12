@@ -1,4 +1,4 @@
-c8da9dd8aabcfc8da2abe232107ec4ba *DESCRIPTION
+9fc1674a2cd164733cb831761b2eaf52 *DESCRIPTION
 1ff303445d71febd184a32dbaea11402 *NAMESPACE
 bdb8b2fa7023285ae6fee8e3bd5b7a61 *R/Artifact.R
 8367de9a9247f8bcbb980cd825f753c2 *R/CallableWrappedPythonObject.R
@@ -12,12 +12,12 @@ c9de88e0b057a25aff9a505f3e6901a6 *R/file_loaders.R
 ccac5d6f0876a63e086768376c234271 *R/file_openers.R
 df070fb7d57ad486a333afd4780fe73d *R/help.R
 5200bfa872766c7103be9e5cb9ec0a3e *R/import.R
-3f78048c11ae352749c16e440eab53ae *R/install.R
+0c4c724f05fc444150a118c656fc5453 *R/install.R
 1eeae456260b1fe2815bfffaf0e029ea *R/lamin_cli.R
-5e791d980d8f67032998154786ce4c64 *R/lamindb.R
+3b5de457e73a28ade0ade9da6d2c5f68 *R/lamindb.R
 bbcbaae9f5a223204aad51ac8300f30c *R/laminr-package.R
 2f18fff463332f65e0d2914fec21fb06 *R/packages.R
-c64f0361e026ac18c27a2dad274b22be *R/require.R
+159758c710afb582e383a267a34ec9dd *R/require.R
 87317e0ad527984c2022d9e89ff4d3a2 *R/reticulate-utils.R
 0f55191d03f615fc9f7b698f7f3c3e34 *R/save_active_file.R
 d9027b59b70096f6aabfad81a5f55a45 *R/status.R
@@ -48,7 +48,7 @@ ca50305ab96ccc573d4117da47f39ecf *man/install_lamindb.Rd
 03240cf4de46a428e88048121064f674 *man/lamin_cli.Rd
 3b156825ee4ae3f684ec2960be50746c *man/laminr-package.Rd
 c1ced8a002e4cc97e03b56dc59539210 *man/laminr_status.Rd
-dab1bcb72935987beb7cbb6275bc38b8 *man/require_module.Rd
+516e13037cb8c1345004fc055a860ab5 *man/require_module.Rd
 83965406cb3dd463f524665b74a8476b *man/use_temporary_instance.Rd
 a009cbed587bab49ded237de89bf1859 *tests/testthat.R
 d8280f5fbf4a13f053c0a798d54389fc *tests/testthat/setup.R
