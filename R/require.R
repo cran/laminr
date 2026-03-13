@@ -41,7 +41,7 @@
 #' require_module("lamindb", version = ">=2.0.0")
 #'
 #' # Require require lamindb with options
-#' require_module("lamindb", options = c("bionty", "wetlab"))
+#' require_module("lamindb", options = c("dev"))
 #'
 #' # Require the development version of lamindb from GitHub
 #' require_module("lamindb", source = "git+https://github.com/laminlabs/lamindb.git")
@@ -137,16 +137,15 @@ require_lamindb <- function(silent = FALSE) {
 
     reticulate::py_require(python_version = ">=3.10,<3.14")
 
+    if (is.null(laminr_lamindb_options)) {
+      laminr_lamindb_options <- "full" # Get all dependencies by default
+    }
+
     # Also require matching devel versions of other lamin packages
     require_module(
       "lamindb_setup",
       options = "aws",
       source = "git+https://github.com/laminlabs/lamindb.git#subdirectory=sub/lamindb-setup",
-      silent = silent
-    )
-    require_module(
-      "lamin_utils",
-      source = "git+https://github.com/laminlabs/lamin-utils.git",
       silent = silent
     )
     require_module(
@@ -160,7 +159,12 @@ require_lamindb <- function(silent = FALSE) {
       silent = silent
     )
     require_module(
-      "lamindb",
+      "pertdb",
+      source = "git+https://github.com/laminlabs/lamindb.git#subdirectory=sub/pertdb",
+      silent = silent
+    )
+    require_module(
+      "lamindb-core", # Main pyproject.toml specifies lamindb-core without dependencies
       options = laminr_lamindb_options,
       source = "git+https://github.com/laminlabs/lamindb.git",
       silent = silent

@@ -29,19 +29,19 @@ test_that("Importing bionty works", {
   expect_s3_class(bt, "python.builtin.module")
 })
 
-test_that("Importing wetlab works", {
+test_that("Importing pertdb works", {
   skip_if_not(
     check_requires(
       "Testing imports",
-      "wetlab",
+      "pertdb",
       language = "Python",
       alert = "none"
     )
   )
 
-  wl <- import_module("wetlab")
+  pt <- import_module("pertdb")
 
-  expect_s3_class(wl, "python.builtin.module")
+  expect_s3_class(pt, "python.builtin.module")
 })
 
 test_that("Importing clinicore works", {

@@ -30,30 +30,29 @@
 #' ln <- import_module("lamindb")
 #'
 #' # Import lamindb with optional dependencies
-#' ln <- import_module("lamindb", options = c("bionty", "wetlab"))
+#' ln <- import_module("lamindb", options = c("dev"))
 #'
 #' # Import other LaminDB modules
 #' bt <- import_module("bionty")
-#' wl <- import_module("wetlab")
+#' pt <- import_module("pertdb")
 #' cc <- import_module("clinicore")
 #'
 #' # Import any Python module
 #' np <- import_module("numpy")
 #' }
 import_module <- function(module, ...) {
-  registry_modules <- c("bionty", "wetlab", "clinicore", "cellregistry", "omop")
+  registry_modules <- c("bionty", "pertdb", "wetlab", "clinicore", "cellregistry", "omop")
   if (module %in% registry_modules) {
     check_instance_module(module)
   }
 
   laminr_lamindb_version <- trimws(tolower(Sys.getenv("LAMINR_LAMINDB_VERSION")))
   lamin_modules <- c(
-    "lamindb", "lamindb_setup", "lamin_utils", "lamin_cli", "bionty"
+    "lamindb", "lamindb_setup", "lamin_utils", "lamin_cli", "bionty", "pertdb"
   )
 
   if (module == "lamindb") {
-    settings <- get_current_lamin_settings(minimal = TRUE)
-    init_lamindb_connection(settings, ...)
+    require_lamindb(...)
   } else if (
     module %in% lamin_modules &&
       laminr_lamindb_version %in% c("github", "devel")
@@ -84,7 +83,7 @@ import_module <- function(module, ...) {
   }
 
   if (module == "lamindb") {
-    wrap_lamindb(py_module, settings)
+    wrap_lamindb(py_module)
   } else {
     py_module
   }

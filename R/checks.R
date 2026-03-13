@@ -130,25 +130,47 @@ check_default_instance <- function(instance = NULL, alert = c("error", "warning"
 #' @returns Whether `module` is included in the current instance, invisibly
 #' @noRd
 check_instance_module <- function(module, alert = c("error", "warning", "message", "none")) {
-  current_default <- get_default_instance()
   msg_fun <- get_message_fun(alert)
 
-  # If there is no current instance just return
-  if (is.null(current_default)) {
+  current_instance <- get_current_lamin_instance(ignore_none = FALSE, silent = TRUE)
+  if (is.null(current_instance)) {
     return()
   }
 
-  ln_setup <- reticulate::import("lamindb_setup")
-
-  check <- try(
-    ln_setup$`_check_setup`$`_check_module_in_instance_modules`(module),
-    silent = TRUE
-  )
-  check <- !inherits(check, "try-error")
+  settings <- get_current_lamin_settings(silent = TRUE)
+  instance_modules <- settings$instance$modules
+  check <- module %in% instance_modules
 
   if (isFALSE(check) && !is.null(msg_fun)) {
     msg_fun(
-      "The current instance ({.val {current_default}}) does not include the {.pkg {module}} module",
+      "The current instance ({.val {current_instance}}) does not include the {.pkg {module}} module",
+      call = rlang::caller_env()
+    )
+  }
+
+  invisible(check)
+}
+
+#' Check on Jupyter
+#'
+#' Check if R is currently running on Jupyter
+#'
+#' @param alert The type of alert message to give
+#'
+#' @returns Whether or not R is running on Jupyter, invisibly
+#' @noRd
+check_on_jupyter <- function(alert = c("error", "warning", "message", "none")) {
+  msg_fun <- get_message_fun(alert)
+  check <- check_requires("Running on Jupyter", "IRkernel", alert = "none") &&
+    !is.null(IRkernel::comm_manager())
+
+  if (check && !is.null(msg_fun)) {
+    msg_fun(
+      c(
+        "{.pkg laminr} appears to be running in a Jupyter environment",
+        "!" = "Jupyter does not display Python output from {.pkg reticulate}, messages from Python will be lost",
+        "i" = "See {.url https://github.com/laminlabs/laminr/issues/243} for details"
+      ),
       call = rlang::caller_env()
     )
   }
