@@ -68,7 +68,7 @@ lamin_connect <- function(instance) {
 
   system_fun <- function(instance) {
     require_lamindb(silent = TRUE)
-    py_config <- reticulate::py_config() # nolint object_usage_linter
+    py_config <- reticulate::py_config() # nolint: object_usage_linter.
 
     system2("lamin", paste("connect", instance), stdout = TRUE, stderr = TRUE)
   }
@@ -100,7 +100,7 @@ lamin_disconnect <- function() {
 
   system_fun <- function() {
     require_lamindb(silent = TRUE)
-    py_config <- reticulate::py_config() # nolint object_usage_linter
+    py_config <- reticulate::py_config() # nolint: object_usage_linter.
 
     system2("lamin", "disconnect", stdout = TRUE, stderr = TRUE)
   }
@@ -206,7 +206,7 @@ lamin_logout <- function() {
 
   system_fun <- function() {
     require_lamindb(silent = TRUE)
-    py_config <- reticulate::py_config() # nolint object_usage_linter
+    py_config <- reticulate::py_config() # nolint: object_usage_linter.
 
     system2("lamin", "logout", stdout = TRUE, stderr = TRUE)
   }
@@ -244,11 +244,12 @@ lamin_init <- function(storage, name = NULL, db = NULL, modules = NULL) {
         require_module(module, silent = TRUE)
       }
     }
-    py_config <- reticulate::py_config() # nolint object_usage_linter
+    py_config <- reticulate::py_config() # nolint: object_usage_linter.
 
     if (!is.null(modules)) {
       check_requires(
-        "Initalising a database with these modules", modules,
+        "Initalising a database with these modules",
+        modules,
         language = "Python"
       )
     }
@@ -265,7 +266,8 @@ lamin_init <- function(storage, name = NULL, db = NULL, modules = NULL) {
 
     if (!is.null(modules)) {
       args <- c(
-        args, paste("--modules", paste(modules, collapse = ","))
+        args,
+        paste("--modules", paste(modules, collapse = ","))
       )
     }
 
@@ -306,8 +308,13 @@ lamin_init <- function(storage, name = NULL, db = NULL, modules = NULL) {
 #' # ->
 #' create_temporary_instance()
 #' }
-lamin_init_temp <- function(name = "laminr-temp", db = NULL, modules = NULL,
-                            add_timestamp = TRUE, envir = parent.frame()) {
+lamin_init_temp <- function(
+  name = "laminr-temp",
+  db = NULL,
+  modules = NULL,
+  add_timestamp = TRUE,
+  envir = parent.frame()
+) {
   lifecycle::deprecate_warn(
     "1.2.0",
     "lamin_init_temp()",
@@ -328,7 +335,10 @@ lamin_init_temp <- function(name = "laminr-temp", db = NULL, modules = NULL,
 
   # Add the clean up handler to the environment
   withr::defer(lamin_delete(name, force = TRUE), envir = envir)
-  withr::defer(unlink(temp_storage, recursive = TRUE, force = TRUE), envir = envir)
+  withr::defer(
+    unlink(temp_storage, recursive = TRUE, force = TRUE),
+    envir = envir
+  )
 }
 
 #' @param force Whether to force deletion without asking for confirmation
@@ -366,11 +376,18 @@ lamin_delete <- function(instance, force = FALSE) {
     ln_setup <- reticulate::import("lamindb_setup")
 
     # Use lamindb_setup to resolve owner/name from instance
-    owner_name <- ln_setup$`_connect_instance`$get_owner_name_from_identifier(instance)
+    owner_name <- ln_setup$`_connect_instance`$get_owner_name_from_identifier(
+      instance
+    )
     slug <- paste0(owner_name[[1]], "/", owner_name[[2]])
 
     # Always force here to avoid Python prompt
-    system2("lamin", paste("delete --force", slug), stdout = TRUE, stderr = TRUE)
+    system2(
+      "lamin",
+      paste("delete --force", slug),
+      stdout = TRUE,
+      stderr = TRUE
+    )
   }
 
   callr::r(
@@ -396,7 +413,12 @@ lamin_delete <- function(instance, force = FALSE) {
 #' # ->
 #' lc$save(...)
 #' }
-lamin_save <- function(filepath, key = NULL, description = NULL, registry = NULL) {
+lamin_save <- function(
+  filepath,
+  key = NULL,
+  description = NULL,
+  registry = NULL
+) {
   lifecycle::deprecate_warn(
     "1.2.0",
     "lamin_save()",
@@ -415,7 +437,8 @@ lamin_save <- function(filepath, key = NULL, description = NULL, registry = NULL
 
   if (!is.null(registry)) {
     args <- c(
-      args, paste("--registry", registry)
+      args,
+      paste("--registry", registry)
     )
   }
 
@@ -423,7 +446,7 @@ lamin_save <- function(filepath, key = NULL, description = NULL, registry = NULL
 
   system_fun <- function(system_args) {
     require_lamindb(silent = TRUE)
-    py_config <- reticulate::py_config() # nolint object_usage_linter
+    py_config <- reticulate::py_config() # nolint: object_usage_linter.
 
     system2("lamin", system_args, stdout = TRUE, stderr = TRUE)
   }
@@ -465,7 +488,7 @@ lamin_settings <- function() {
 
   system_fun <- function() {
     require_lamindb(silent = TRUE)
-    py_config <- reticulate::py_config() # nolint object_usage_linter
+    py_config <- reticulate::py_config() # nolint: object_usage_linter.
 
     system2("lamin", "settings", stdout = TRUE, stderr = TRUE)
   }

@@ -10,7 +10,8 @@ set_default_instance <- function(instance_slug) {
   current_default <- get_default_instance()
 
   if (
-    !is.null(current_default) && !is.null(instance_slug) &&
+    !is.null(current_default) &&
+      !is.null(instance_slug) &&
       !identical(instance_slug, current_default)
   ) {
     cli::cli_warn(c(
@@ -47,9 +48,13 @@ get_default_instance <- function() {
 #' @returns A list of the current LaminDB settings
 #' @export
 get_current_lamin_settings <- function(minimal = FALSE, silent = FALSE) {
-  if (!reticulate::py_available() || !reticulate::py_module_available("lamindb")) {
+  if (
+    !reticulate::py_available() || !reticulate::py_module_available("lamindb")
+  ) {
     if (!silent) {
-      cli::cli_alert_danger("Python {.pkg lamindb} is not available, cannot get settings")
+      cli::cli_alert_danger(
+        "Python {.pkg lamindb} is not available, cannot get settings"
+      )
     }
     return(invisible(NULL))
   }
@@ -113,7 +118,10 @@ get_current_lamin_instance <- function(ignore_none = TRUE, silent = FALSE) {
 
   instance_slug <- settings$instance$slug
 
-  if (is.null(instance_slug) || (ignore_none && identical(instance_slug, "none/none"))) {
+  if (
+    is.null(instance_slug) ||
+      (ignore_none && identical(instance_slug, "none/none"))
+  ) {
     if (!silent) {
       cli::cli_alert_danger("No current instance")
     }
@@ -121,30 +129,6 @@ get_current_lamin_instance <- function(ignore_none = TRUE, silent = FALSE) {
   }
 
   instance_slug
-}
-
-#' Check if we are in a knitr notebook
-#'
-#' @return `TRUE` if we are in a knitr notebook, `FALSE` otherwise
-#'
-#' @noRd
-is_knitr_notebook <- function() {
-  # If knitr is not available, assume that we are not in a notebook
-  if (!requireNamespace("knitr", quietly = TRUE)) {
-    return(FALSE)
-  }
-
-  # Check if we are in a notebook
-  !is.null(knitr::opts_knit$get("out.format"))
-}
-
-#' Check if we are in RStudio
-#'
-#' @return `TRUE` if we are in RStudio, `FALSE` otherwise
-#'
-#' @noRd
-is_rstudio <- function() {
-  requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()
 }
 
 #' Detect path
@@ -159,7 +143,8 @@ detect_path <- function() {
   current_path <- NULL
 
   # Get path if in a running RMarkdown notebook
-  if (is_knitr_notebook()) {
+  # nolint next: object_usage_linter.
+  if (check_in_knitr_notebook(alert = "none")) {
     current_path <- knitr::current_input(dir = TRUE)
   }
 
@@ -176,10 +161,18 @@ detect_path <- function() {
   }
 
   # Get path if in a document in RStudio
-  if (is.null(current_path) && is_rstudio()) {
+  if (is.null(current_path) && check_in_rstudio(alert = "none")) {
     doc_context <- rstudioapi::getActiveDocumentContext()
     if (is.null(doc_context$id) || doc_context$id != "#console") {
       current_path <- doc_context$path
+    }
+  }
+
+  # Check path if on Jupyter
+  if (is.null(current_path) && check_on_jupyter(alert = "none")) {
+    jupyter_session_name <- Sys.getenv("JPY_SESSION_NAME")
+    if (!identical(jupyter_session_name, "")) {
+      current_path <- jupyter_session_name
     }
   }
 
@@ -237,11 +230,15 @@ disable_lamin_colors <- function() {
     return(invisible(is_disabled))
   }
 
-  if (is_knitr_notebook()) {
+  # nolint next: object_usage_linter.
+  if (check_in_knitr_notebook(alert = "none")) {
     # Disable Python ANSI color codes in knitr
     # Don't use import_module() here to avoid an infinite loop
     py_lamin_utils <- reticulate::import("lamin_utils")
-    py_lamin_utils[["_logger"]]$LEVEL_TO_COLORS <- setNames(list(), character(0))
+    py_lamin_utils[["_logger"]]$LEVEL_TO_COLORS <- setNames(
+      list(),
+      character(0)
+    )
     py_lamin_utils[["_logger"]]$RESET_COLOR <- ""
     options(LAMINR_COLORS_DISABLED = TRUE)
 

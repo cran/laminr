@@ -41,7 +41,8 @@ prompt_yes_no <- function(msg) {
 get_message_fun <- function(alert = c("error", "warning", "message", "none")) {
   alert <- match.arg(alert)
 
-  switch(alert,
+  switch(
+    alert,
     error = cli::cli_abort,
     warning = cli::cli_warn,
     message = cli::cli_inform,
@@ -58,7 +59,10 @@ get_message_fun <- function(alert = c("error", "warning", "message", "none")) {
 #' @returns `stdout` (after stripping), invisibly
 #' @noRd
 print_stdout <- function(stdout) {
-  if (getOption("LAMINR_COLORS_DISABLED", is_knitr_notebook())) {
+  if (
+    # nolint next: object_usage_linter.
+    getOption("LAMINR_COLORS_DISABLED", check_in_knitr_notebook(alert = "none"))
+  ) {
     stdout <- cli::ansi_strip(stdout)
   }
 

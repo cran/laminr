@@ -1,10 +1,11 @@
 # Base class for wrapped Python objects. Only exists to allow shared S3 methods.
-WrappedPythonObject <- R6::R6Class( # nolint object_name_linter
+# nolint next: object_name_linter.
+WrappedPythonObject <- R6::R6Class(
   "laminr.WrappedPythonObject"
 )
 
 #' @export
-.DollarNames.laminr.WrappedPythonObject <- function(x, pattern) { # nolint object_length_linter object_name_linter
+.DollarNames.laminr.WrappedPythonObject <- function(x, pattern) {
   # Get the corresponding Python object
   py_object <- unwrap_python(x)
   # Get the dollar names for the Python object
@@ -15,7 +16,7 @@ WrappedPythonObject <- R6::R6Class( # nolint object_name_linter
 }
 
 #' @export
-r_to_py.laminr.WrappedPythonObject <- function(x, convert = FALSE) { # nolint object_length_linter object_name_linter
+r_to_py.laminr.WrappedPythonObject <- function(x, convert = FALSE) {
   py_object <- unwrap_python(x)
   assign("convert", convert, envir = py_object)
   py_object

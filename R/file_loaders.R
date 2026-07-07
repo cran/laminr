@@ -113,7 +113,8 @@ load_h5mu <- function(file, ...) {
 #' @return NULL if interactive mode is enabled, the path to the file otherwise
 #' @noRd
 load_html <- function(file, ...) {
-  if (is_knitr_notebook()) {
+  # nolint next: object_usage_linter.
+  if (check_in_knitr_notebook(alert = "none")) {
     lines <- readLines(file)
     return(knitr::raw_html(paste(lines, collapse = "\n")))
   }
@@ -147,7 +148,8 @@ load_json <- function(file, ...) {
 #' @noRd
 load_image <- function(file, ...) {
   # If part of a knitr document, include the image
-  if (is_knitr_notebook()) {
+  # nolint next: object_usage_linter.
+  if (check_in_knitr_notebook(alert = "none")) {
     ext <- tools::file_ext(file)
 
     if (knitr::is_latex_output() && ext == "svg") {
@@ -161,7 +163,7 @@ load_image <- function(file, ...) {
 
   # If interactive, show the image
   if (interactive()) {
-    if (is_rstudio()) { # nolint object_usage_linter
+    if (check_in_rstudio(alert = "none")) {
       return(rstudioapi::viewer(file))
     } else {
       return(utils::browseURL(file, ...))

@@ -14,8 +14,8 @@
 #' the module and used to create an ephemeral environment unless another
 #' environment is found (see `vignette("versions", package = "reticulate")`).
 #'
-#' Requirements for the `lamindb` module can be controlled using environment
-#' variables differently, see <https://docs.lamin.ai/setup-laminr> for details.
+#' Requirements for the `lamindb` module can be controlled differently using
+#' environment variables, see <https://docs.lamin.ai/setup-laminr> for details.
 #'
 #' @seealso
 #'
@@ -41,20 +41,35 @@
 #' np <- import_module("numpy")
 #' }
 import_module <- function(module, ...) {
-  registry_modules <- c("bionty", "pertdb", "wetlab", "clinicore", "cellregistry", "omop")
+  registry_modules <- c(
+    "bionty",
+    "pertdb",
+    "wetlab",
+    "clinicore",
+    "cellregistry",
+    "omop"
+  )
   if (module %in% registry_modules) {
     check_instance_module(module)
   }
 
-  laminr_lamindb_version <- trimws(tolower(Sys.getenv("LAMINR_LAMINDB_VERSION")))
+  laminr_lamindb_version <- trimws(tolower(Sys.getenv(
+    "LAMINR_LAMINDB_VERSION"
+  )))
   lamin_modules <- c(
-    "lamindb", "lamindb_setup", "lamin_utils", "lamin_cli", "bionty", "pertdb"
+    "lamindb",
+    "lamindb_setup",
+    "lamin_utils",
+    "lamin_cli",
+    "bionty",
+    "pertdb"
   )
 
   if (module == "lamindb") {
     require_lamindb(...)
   } else if (
-    module %in% lamin_modules &&
+    module %in%
+      lamin_modules &&
       laminr_lamindb_version %in% c("github", "devel")
   ) {
     # Make sure we use devel versions of lamin modules if any are imported
